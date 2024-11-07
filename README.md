@@ -1,11 +1,11 @@
 # ProjZ
 A simple asynchronous library for interaction with Project Z
 
-## Installation
+## Installation (D4rkwat3r PyPI)
  ```commandline
  pip install projz.py
  ```
-## Installation Fork
+## Installation Fork (MrWest Git)
 ```
 pip install git+https://github.com/TheMrWest/ProjZ.git
 ```
