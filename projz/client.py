@@ -1320,6 +1320,14 @@ class Client(RequestManager):
             "type": "unblock"
         })
 
+    async def invite_host_chat(self, chat_id, user_id):
+        """
+        Send host a user
+        param: chat_id Chat Id
+        param: user_id Id from user
+        """
+        return await self.post_empty(f'/v1/chat/threads/{chat_id}/invite-host/{user_id}')
+
     async def remove_chat_member(
         self,
         chat_id: int,
