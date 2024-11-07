@@ -886,6 +886,34 @@ class Client(RequestManager):
         """
         return Blog.from_dict(await self.get(f"/v1/blogs/{blog_id}"))
 
+    async def like_blog(self, blogId: int, stickerId: int = 65956773102028339):
+        """
+        Like Blog
+        :param blogId: blog id
+        :param stickerId: react
+        :return: 
+        """
+        data = {
+			"createdTime": 0,
+			"stickerId": stickerId,
+			"count": 0,
+			"justAddTimeMs": 0
+		}
+
+        data['objectType'] = EObjectType.BLOG.value
+        data['objectId'] = blogId
+
+        return await self.post_json('/v1/reactions', (data))
+    
+    async def unlike_blog(self, blogId: int, stickerId: int = 65956773102028339):
+        """
+        Unlke Blog
+        :param blogId: blog id
+        :param stickerId: react
+        :return: 
+        """
+        return await self.delete(f"/v1/reactions?objectId={blogId}&objectType=2&stickerId={stickerId}")
+
     async def post_blog(self,
                         title: str,
                         content: str,
@@ -1320,14 +1348,15 @@ class Client(RequestManager):
             "type": "unblock"
         })
 
-    async def invite_host_chat(self, chat_id, user_id):
+    async def invite_host_chat(self, thread_id, user_id):
         """
         Send host a user
         param: chat_id Chat Id
         param: user_id Id from user
+        return: 
         """
-        return await self.post_empty(f'/v1/chat/threads/{chat_id}/invite-host/{user_id}')
-
+        return await self.post_empty(f'/v1/chat/threads/{thread_id}/invite-host/{user_id}')
+        
     async def remove_chat_member(
         self,
         chat_id: int,
