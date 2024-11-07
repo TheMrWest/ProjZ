@@ -337,6 +337,13 @@ class Client(RequestManager):
         """
         await self.post_empty(f"/v1/chat/threads/{thread_id}/accept-invitation")
 
+
+	# testing
+    async def join_chat_call(self, thread_id: int):
+        await self.join_chat(thread_id)
+        return await self.post_empty(f'/v1/chat/threads/{thread_id}/free-talk-confirm')
+
+	
     async def join_circle(self, reference: CircleReference) -> None:
         """
         Join to the circle
