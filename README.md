@@ -5,6 +5,11 @@ A simple asynchronous library for interaction with Project Z
  ```commandline
  pip install projz.py
  ```
+## Installation Fork
+```
+pip install git+https://github.com/TheMrWest/ProjZ.git
+```
+
 
 ### Example - login and get object id from link
 ```python3
