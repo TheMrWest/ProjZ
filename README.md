@@ -1,5 +1,5 @@
 # ProjZ
-A simple asynchronous library for interaction with Project Z
+A asynchronous library for interaction with Project Z
 
 ## Installation
  ```commandline
