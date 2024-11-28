@@ -12,7 +12,7 @@
 
 <h4>Notes</h4>
 <p>
-This library is a fork of the repository </a href="https://github.com/D4rkwat3r/ProjZ">DarkW4ther/ProjZ</a>, enhanced with several improvements, fixes, and the introduction of new features aimed at better interaction with ProjectZ. As such, this repository is fundamentally built upon the foundation laid by the original ProjZ library.
+This library is a fork of the repository <a href="https://github.com/D4rkwat3r/ProjZ">DarkW4ther/ProjZ</a>, enhanced with several improvements, fixes, and the introduction of new features aimed at better interaction with ProjectZ. As such, this repository is fundamentally built upon the foundation laid by the original ProjZ library.
 
 Read the documentation for more details
 </p>
