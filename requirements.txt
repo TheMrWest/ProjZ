@@ -1,10 +1,2 @@
-aiohttp
-aiofiles
-python-magic
-ujson
-dataclasses
-dataclasses-json
-python-dateutil
-dill
-mnemonic
-bip32utils
+httpx
+typing
