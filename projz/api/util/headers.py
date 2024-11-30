@@ -9,15 +9,18 @@ class HeadersProvider(HeadersProviderBase):
     headers_persistents = {"appType": "MainApp","appVersion": "2.27.1","deviceType": "1","flavor": "google",}
     header_keys = ["rawDeviceId", "rawDeviceIdTwo", "rawDeviceIdThree","appType", "appVersion", "osType","deviceType", "sId", "countryCode","reqTime", "User-Agent", "contentRegion","nonce", "carrierCountryCodes"]
 
+    sId = None
+    async def set_sId(sId): HeadersProvider.sId = sId
+    async def get_sId(): return HeadersProvider.sId
+
     async def create_headers(
-        self,
         device_id: str,
-        sId: str,
-        nonce: str,
         language: str,
         country_code: str,
         time_zone: int,
-        isIos: bool = False
+        nonce: str = str(uuid4()),
+        isIos: bool = False,
+        sId: str = None,
     ) -> dict:
         
         user_agent = ("com.projz.z.ios/2.72.0-24937 (Darwin/23.6.0; U; iOS 17.6.1; iPhone12,1)" if isIos else "com.projz.z.android/2.27.1-25104 (Linux; U; Android 7.1.2; ASUS_Z01QD; Build/Asus-user 7.1.2 2017)")
@@ -25,7 +28,6 @@ class HeadersProvider(HeadersProviderBase):
 
         headers = {
             "rawDeviceId": device_id,
-            "sId": sId,
             "nonce": nonce,
             "Accept-Language": language,
             "User-Agent": user_agent,
@@ -33,14 +35,13 @@ class HeadersProvider(HeadersProviderBase):
             "countryCode": country_code.upper(),
             "carrierCountryCodes": country_code,
             "timeZone": str(time_zone),
-            "reqTime": str(int(time() * 1000)),
+            "reqTime": str(int(time() * 1000))
         }
+
+        if sId is not None: headers.update({"sId": sId})
         return headers
 
-    async def generate_request_signature(self, path: str, headers: dict, body: bytes) -> str:
-
-        
-
+    async def generate_request_signature(path: str, headers: dict, body: bytes) -> str:
         mac = HMAC(
             key=bytes.fromhex("ce070279278de1b6390b76942c13a0b0aa0fda6aedd6f2d655eda7cf6543b35f" + ("6a" * 32)),
             msg=path.encode("utf-8"),
