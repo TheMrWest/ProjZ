@@ -2,24 +2,12 @@ from time import time
 from hashlib import sha1, sha256
 from hmac import HMAC
 from base64 import b64encode
+from uuid import uuid4
 
 from .base_headers import HeadersProviderBase
 class HeadersProvider(HeadersProviderBase):
-    headers_persistents = {
-        "appType": "MainApp",
-        "appVersion": "2.27.1",
-        "deviceType": "1",
-        "flavor": "google",
-    }
-
-    async def get_signable_header_keys(self) -> list[str]:
-        return [
-            "rawDeviceId", "rawDeviceIdTwo", "rawDeviceIdThree",
-            "appType", "appVersion", "osType",
-            "deviceType", "sId", "countryCode",
-            "reqTime", "User-Agent", "contentRegion",
-            "nonce", "carrierCountryCodes"
-        ]
+    headers_persistents = {"appType": "MainApp","appVersion": "2.27.1","deviceType": "1","flavor": "google",}
+    header_keys = ["rawDeviceId", "rawDeviceIdTwo", "rawDeviceIdThree","appType", "appVersion", "osType","deviceType", "sId", "countryCode","reqTime", "User-Agent", "contentRegion","nonce", "carrierCountryCodes"]
 
     async def create_headers(
         self,
@@ -50,20 +38,23 @@ class HeadersProvider(HeadersProviderBase):
         return headers
 
     async def generate_request_signature(self, path: str, headers: dict, body: bytes) -> str:
+
+        
+
         mac = HMAC(
             key=bytes.fromhex("ce070279278de1b6390b76942c13a0b0aa0fda6aedd6f2d655eda7cf6543b35f" + ("6a" * 32)),
             msg=path.encode("utf-8"),
             digestmod=sha256
         )
 
-        for header in [headers[signable] for signable in await self.get_signable_header_keys() if signable in headers]:
+        for header in [headers[signable] for signable in HeadersProvider.header_keys if signable in headers]:
             mac.update(header.encode("utf-8"))
         if body:
             mac.update(body)
 
         return b64encode(bytes.fromhex("04") + mac.digest()).decode("utf-8")
     
-    async def generate_device_id(self, installation_id: str) -> str:
+    async def generate_device_id(installation_id: str = str(uuid4())) -> str:
         prefix = bytes.fromhex("04") + sha1(installation_id.encode("utf-8")).digest()
         return (
             prefix + sha1(
