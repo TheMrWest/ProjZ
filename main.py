@@ -1,3 +1,3 @@
-import projzpy
+import projz
 
-c = projzpy.Client()
+c = projz.Client()
